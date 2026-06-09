@@ -13,6 +13,8 @@ export type SocialLink = {
   href: string;
 };
 
+export type LogoStyle = "app" | "default";
+
 export type FeaturedLink = {
   label: string;
   href: string;
@@ -20,7 +22,10 @@ export type FeaturedLink = {
   badge?: string;
   highlightKey?: string;
   iconEmoji?: string;
-  iconImageUrl?: string;
+  /** Local path (e.g. /logos/app.png) or remote URL for a link logo. */
+  logoUrl?: string;
+  /** "app" rounds corners like an iOS/Android icon; "default" fits the image as-is. */
+  logoStyle?: LogoStyle;
 };
 
 export type LinkItem = {
@@ -28,7 +33,10 @@ export type LinkItem = {
   href: string;
   description?: string;
   iconEmoji?: string;
-  iconImageUrl?: string;
+  /** Local path (e.g. /logos/app.png) or remote URL for a link logo. */
+  logoUrl?: string;
+  /** "app" rounds corners like an iOS/Android icon; "default" fits the image as-is. */
+  logoStyle?: LogoStyle;
 };
 
 export type NewsletterConfig = {
@@ -95,10 +103,18 @@ export const featuredLinks: FeaturedLink[] = [
 
 export const links: LinkItem[] = [
   {
+    label: "Cozydo",
+    href: "https://apps.apple.com/ca/app/cozydo-calm-task-habits/id6774354264",
+    description: "Calm Task & Habit Tracker",
+    logoUrl: "/logos/cozydo.jpg",
+    logoStyle: "app",
+  },
+  {
     label: "MicroPNG",
     href: "https://micropng.sahilfruitwala.com",
     description: "Compress, Convert & Resize Images",
-    iconEmoji: "✦",
+    logoUrl: "/logos/micropng.webp",
+    logoStyle: "app",
   },
   // {
   //   label: "InfiniteResume",
