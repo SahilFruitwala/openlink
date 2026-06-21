@@ -103,6 +103,13 @@ export const featuredLinks: FeaturedLink[] = [
 
 export const links: LinkItem[] = [
   {
+    label: "DuoCamRecorder",
+    href: "https://apps.apple.com/us/app/duocamrecorder/id6774351529",
+    description: "Record 16:9 & 9:16 Together",
+    logoUrl: "/logos/duocamrecorder.png",
+    logoStyle: "app",
+  },
+  {
     label: "Cozydo",
     href: "https://apps.apple.com/ca/app/cozydo-calm-task-habits/id6774354264",
     description: "Calm Task & Habit Tracker",
