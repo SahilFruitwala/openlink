@@ -4,7 +4,6 @@ import { useState } from "react";
 import { newsletter } from "../config/openlink";
 import { posthog } from "../lib/posthogClient";
 import { getTrackingContext } from "../lib/tracking";
-import { SectionHeader } from "./SectionHeader";
 
 function showNewsletterSection(): boolean {
   if (newsletter.provider === "beehiiv") return true;
@@ -87,34 +86,29 @@ export function NewsletterForm() {
   };
 
   return (
-    <section aria-label="Newsletter signup" className="pt-2">
-      <SectionHeader index="04" label="Stay looped" />
-      <div className="card relative mt-2 flex w-full flex-col overflow-hidden rounded-[1.75rem] p-6">
-      <div className="relative z-10 space-y-2 text-center">
-        <div className="mx-auto mb-2 flex h-10 w-10 items-center justify-center rounded-2xl border border-earth/10 bg-primary/10 text-primary dark:border-white/10 dark:bg-primary/15">
-          <span className="text-xl">✉️</span>
-        </div>
-        <h2 className="font-display text-lg font-bold tracking-tight text-earth dark:text-earth">
+    <section aria-label="Newsletter signup">
+      <div className="relative flex w-full flex-col pt-12">
+      <div className="relative z-10">
+        <h3 className="font-serif text-[24px] font-medium leading-tight text-ink dark:text-ink">
           Join the Inner Circle
-        </h2>
-        <p className="mx-auto max-w-[280px] text-xs font-medium leading-relaxed text-earth/60 dark:text-earth/70">
+        </h3>
+        <p className="mt-2 max-w-[420px] text-[15px] leading-relaxed text-muted dark:text-muted">
           Exclusive updates about what I&apos;m building, reading, and learning.
         </p>
       </div>
 
       {success ? (
-        <div className="relative z-10 mt-6 space-y-3 text-center">
-          <div className="flex items-center justify-center gap-2 text-sm font-bold text-primary dark:text-primary">
-            <span className="flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[10px] text-white">✓</span>
-            You&apos;re on the list!
-          </div>
+        <div className="relative z-10 mt-4 space-y-1.5">
+          <p className="font-serif text-[18px] font-medium text-ink dark:text-ink">
+            You&apos;re on the list.
+          </p>
           <button
             type="button"
             onClick={() => {
               setSuccess(false);
               setError(null);
             }}
-            className="text-[11px] font-bold uppercase tracking-widest text-earth/40 hover:text-primary dark:text-earth/50"
+            className="text-[14px] text-muted underline decoration-transparent underline-offset-[3px] transition-colors hover:decoration-current dark:text-muted"
           >
             Use another email
           </button>
@@ -124,7 +118,7 @@ export function NewsletterForm() {
           action={isBeehiiv ? undefined : newsletter.action}
           method={isBeehiiv ? undefined : newsletter.method ?? "POST"}
           onSubmit={handleSubmit}
-          className="relative z-10 mt-6 flex flex-col gap-3"
+          className="relative z-10 mt-4 flex flex-col gap-2 sm:flex-row"
         >
           {!isBeehiiv && newsletter.hiddenFields &&
             Object.entries(newsletter.hiddenFields).map(([key, value]) => (
@@ -136,32 +130,29 @@ export function NewsletterForm() {
             type="email"
             name="email"
             required
-            placeholder="Enter your email"
+            placeholder="you@example.com"
             disabled={submitting}
             className="
-              h-12 w-full appearance-none rounded-2xl
-              bg-earth/[0.03] px-4 text-sm font-semibold text-earth
-              placeholder:text-earth/35 placeholder:font-medium
-              border border-earth/10
-              focus:border-primary/50
+              h-[52px] sm:h-11 w-full sm:flex-1 appearance-none rounded-md
+              bg-fill px-4 text-[16px] sm:text-[15px] text-ink
+              placeholder:text-faint
+              border border-transparent
+              focus:border-accent
               focus:outline-none
-              dark:bg-white/5
-              dark:border-white/10
-              dark:placeholder:text-earth/35
               disabled:opacity-60
-              transition-all"
+              transition-colors"
           />
           <button
             type="submit"
             disabled={submitting}
-            className="h-12 w-full rounded-2xl bg-earth px-4 font-mono text-xs font-semibold uppercase tracking-widest text-cream shadow-lg transition-all hover:opacity-90 active:scale-[0.98] disabled:opacity-60 dark:bg-primary dark:text-[#131319]"
+            className="h-[52px] sm:h-11 shrink-0 rounded-md bg-accent px-6 text-[14px] font-medium text-background transition-opacity hover:opacity-85 disabled:opacity-60"
           >
-            {submitting ? "Joining..." : "Subscribe"}
+            {submitting ? "Joining…" : "Subscribe"}
           </button>
         </form>
       )}
       {error && (
-        <p className="relative z-10 mt-3 text-center text-[11px] font-bold text-stamp/90">
+        <p className="relative z-10 mt-2.5 text-[14px] text-muted dark:text-muted">
           {error}
         </p>
       )}
