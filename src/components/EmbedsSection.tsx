@@ -1,22 +1,17 @@
 import { embeds } from "../config/openlink";
-import { SectionHeader } from "./SectionHeader";
 
 export function EmbedsSection() {
   if (!embeds.length) return null;
 
   return (
-    <section aria-label="Media" className="pt-2">
-      <SectionHeader index="05" label="Watch" />
-      <div className="space-y-4 pt-2">
+    <section aria-label="Media">
+      <div className="space-y-7 pt-12">
         {embeds.map((embed) => (
-          <div key={embed.title} className="card group overflow-hidden rounded-[1.75rem]">
-            <div className="flex items-center justify-between px-5 py-3.5">
-              <p className="font-mono text-[11px] font-semibold uppercase tracking-widest text-earth/70 dark:text-earth/80">
-                {embed.title}
-              </p>
-              <span className="catalog-tag text-stamp">● REC</span>
-            </div>
-            <div className="relative aspect-video w-full bg-earth/5">
+          <div key={embed.title} className="group">
+            <p className="mb-2.5 font-serif text-[18px] font-medium text-ink dark:text-ink">
+              {embed.title}
+            </p>
+            <div className="relative aspect-video w-full overflow-hidden rounded-md bg-fill">
               <iframe
                 src={embed.src}
                 title={embed.title}

@@ -5,146 +5,75 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 /* ---------------------------------------------------------------
-   Manifest system — a personal directory rendered like an archive
-   card: warm paper, ink, a single stamp-ink accent, mono catalog
-   tags. See MEMORY / design notes for rationale.
+   Warm editorial. Paper and ink, not panels. One continuous column,
+   hairline rules instead of section boxes, terracotta as the only accent.
 ------------------------------------------------------------------ */
 
 :root {
-  --background: #f6f4ee;
-  --surface: #fffdf8;
-  --foreground: #1a1f2b;
-  --color-primary: #c8862c;
-  --color-primary-soft: #e3a62f;
-  --color-stamp: #b8452f;
-  --color-accent: #c8862c;
-  --color-cream: #fffdf8;
-  --color-earth: #1a1f2b;
-  --color-line: rgba(26, 31, 43, 0.13);
-  --shadow-color: 26 31 43;
+  --background: #faf6f0;
+  --foreground: #2a211c;
+  --color-muted: #7a6a5f;
+  --color-faint: #a2907f;
+  --color-hairline: rgba(42, 33, 28, 0.12);
+  --color-accent: #b4552d;
+  --color-fill: rgba(42, 33, 28, 0.05);
 }
 
 :root.dark {
-  --background: #131319;
-  --surface: #1b1b22;
-  --foreground: #ece9e0;
-  --color-primary: #f0b94e;
-  --color-primary-soft: #f0b94e;
-  --color-stamp: #e37456;
-  --color-accent: #f0b94e;
-  --color-cream: #1b1b22;
-  --color-earth: #ece9e0;
-  --color-line: rgba(236, 233, 224, 0.14);
-  --shadow-color: 0 0 0;
+  --background: #1b1613;
+  --foreground: #f2e9df;
+  --color-muted: #a89685;
+  --color-faint: #7a6a5f;
+  --color-hairline: rgba(242, 233, 223, 0.14);
+  --color-accent: #e08a5c;
+  --color-fill: rgba(242, 233, 223, 0.06);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
-  --font-display: "Space Grotesk", "Inter", system-ui, sans-serif;
-  --font-mono: "IBM Plex Mono", "SFMono-Regular", Menlo, monospace;
-  --color-primary: var(--color-primary);
+  --font-sans: "Karla", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-serif: "Fraunces", "Iowan Old Style", Georgia, serif;
+  --color-ink: var(--foreground);
+  --color-muted: var(--color-muted);
+  --color-faint: var(--color-faint);
   --color-accent: var(--color-accent);
-  --color-cream: var(--color-cream);
-  --color-earth: var(--color-earth);
-  --color-stamp: var(--color-stamp);
-}
-
-* {
-  border-color: var(--color-line);
+  --color-hairline: var(--color-hairline);
+  --color-fill: var(--color-fill);
 }
 
 body {
   min-height: 100dvh;
   background-color: var(--background);
-  background-image:
-    radial-gradient(circle at 1px 1px, rgba(26, 31, 43, 0.07) 1px, transparent 0);
-  background-size: 22px 22px;
-  background-attachment: fixed;
-  color: var(--color-earth);
+  color: var(--foreground);
   font-family: var(--font-sans);
+  font-feature-settings: "ss01";
+  -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
 
-.dark body {
-  background-image:
-    radial-gradient(circle at 1px 1px, rgba(236, 233, 224, 0.06) 1px, transparent 0);
-  background-size: 22px 22px;
-}
-
-.font-display {
-  font-family: var(--font-display);
-}
-
-.font-mono {
-  font-family: var(--font-mono);
-}
-
-/* Flat "manifest card" surface — hairline border, no blur, a slow lift on hover */
-.card {
-  background: var(--surface);
-  border: 1.5px solid var(--color-line);
-  box-shadow: 0 1px 2px rgba(var(--shadow-color) / 0.04);
-  transition:
-    transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-    border-color 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-    box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-    background 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.card:hover {
-  transform: translateY(-2px);
-  border-color: rgba(200, 134, 44, 0.5);
-  box-shadow: 0 10px 24px -8px rgba(var(--shadow-color) / 0.16);
-}
-
-.dark .card:hover {
-  border-color: rgba(240, 185, 78, 0.4);
-  box-shadow: 0 10px 24px -8px rgba(0, 0, 0, 0.45);
-}
-
-/* Catalog tag — the recurring "stamped index number" signature element */
-.catalog-tag {
-  font-family: var(--font-mono);
-  font-size: 9px;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  line-height: 1;
-}
-
-.profile-glow {
-  box-shadow: 0 0 0 6px rgba(200, 134, 44, 0.08);
-  transition: box-shadow 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.dark .profile-glow {
-  box-shadow: 0 0 0 6px rgba(240, 185, 78, 0.08);
-}
-
-/* Keyboard focus — always visible, never suppressed */
+/* Keyboard focus — always visible */
 a:focus-visible,
 button:focus-visible,
 input:focus-visible {
-  outline: 2px solid var(--color-primary);
+  outline: 2px solid var(--color-accent);
   outline-offset: 3px;
-  border-radius: 4px;
+  border-radius: 3px;
 }
 
 ::selection {
-  background: var(--color-primary);
-  color: var(--color-cream);
+  background: var(--foreground);
+  color: var(--background);
 }
 
 ::-webkit-scrollbar {
   width: 0px;
 }
 
-/* Staggered entrance sequence */
 @keyframes rise-in {
   from {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(6px);
   }
   to {
     opacity: 1;
@@ -153,19 +82,19 @@ input:focus-visible {
 }
 
 .rise-in {
-  animation: rise-in 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: rise-in 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .rise-in {
     animation: none;
   }
-  .card,
-  .profile-glow {
-    transition: none;
+  * {
+    transition: none !important;
   }
 }
 
-button, a {
+button,
+a {
   cursor: pointer;
 }
