@@ -1,6 +1,6 @@
 "use client";
 
-import type { MouseEvent, ReactNode } from "react";
+import type { CSSProperties, MouseEvent, ReactNode } from "react";
 import { posthog } from "../lib/posthogClient";
 import { buildTrackedUrl, getTrackingContext } from "../lib/tracking";
 
@@ -11,6 +11,7 @@ type TrackedLinkProps = {
   label: string;
   extraUTM?: Record<string, string>;
   className?: string;
+  style?: CSSProperties;
   target?: string;
   rel?: string;
 };
@@ -22,6 +23,7 @@ export function TrackedLink({
   label,
   extraUTM,
   className,
+  style,
   target,
   rel,
 }: TrackedLinkProps) {
@@ -52,6 +54,7 @@ export function TrackedLink({
       aria-label={label}
       onClick={handleClick}
       className={className}
+      style={style}
     >
       {children}
     </a>

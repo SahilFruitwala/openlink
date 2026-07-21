@@ -82,8 +82,8 @@ export function ThemeToggle() {
 
   if (!mounted) {
     return (
-      <div className="glass flex h-9 w-9 items-center justify-center rounded-full">
-        <span className="text-accent">
+      <div className="card flex h-10 w-10 items-center justify-center rounded-2xl">
+        <span className="text-primary">
           <SunIcon />
         </span>
       </div>
@@ -93,10 +93,10 @@ export function ThemeToggle() {
   return (
     <button
       onClick={toggleTheme}
-      className="glass flex h-9 w-9 items-center justify-center rounded-full transition-all hover:bg-white/50 active:scale-95 dark:hover:bg-white/5"
+      className="card flex h-10 w-10 items-center justify-center rounded-2xl active:scale-95"
       aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
     >
-      <span className="text-accent">{isDark ? <SunIcon /> : <MoonIcon />}</span>
+      <span className="text-primary">{isDark ? <SunIcon /> : <MoonIcon />}</span>
     </button>
   );
 }

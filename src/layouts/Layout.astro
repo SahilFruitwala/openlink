@@ -9,8 +9,8 @@ interface Props {
 }
 
 const {
-  title = "OpenLink – Minimal link page",
-  description = "OpenLink is a fast, minimal link-in-bio page with UTM and PostHog tracking built-in.",
+  title = "Sahil Fruitwala — Developer & Creator | OpenLink",
+  description = "Indie apps (DuoCamRecorder, MicroPNG), writing, and everywhere else to find Sahil Fruitwala online.",
 } = Astro.props;
 
 const siteUrl = "https://openlink.sahilfruitwala.com";
@@ -35,20 +35,33 @@ const structuredData = JSON.stringify({
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
     <meta name="generator" content={Astro.generator} />
 
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta
       name="keywords"
-      content="OpenLink, link in bio, digital identity, social media links, minimal link page, Sahil Fruitwala"
+      content="Sahil Fruitwala, indie developer, iOS apps, DuoCamRecorder, MicroPNG, link in bio, OpenLink"
     />
     <meta name="author" content="Sahil Fruitwala" />
     <meta name="robots" content="index, follow" />
-    <meta name="theme-color" content="#fdfdfb" />
+    <meta name="theme-color" content="#f6f4ee" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#131319" media="(prefers-color-scheme: dark)" />
     <link rel="canonical" href={siteUrl} />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap"
+      rel="stylesheet"
+    />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
@@ -56,6 +69,9 @@ const structuredData = JSON.stringify({
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={`${siteUrl}/og-image.png`} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={`${name} — ${role}`} />
     <meta property="og:site_name" content="OpenLink" />
     <meta property="og:locale" content="en_US" />
 
@@ -65,6 +81,7 @@ const structuredData = JSON.stringify({
     <meta property="twitter:title" content={title} />
     <meta property="twitter:description" content={description} />
     <meta property="twitter:image" content={`${siteUrl}/og-image.png`} />
+    <meta property="twitter:image:alt" content={`${name} — ${role}`} />
     <meta property="twitter:creator" content="@SahilBeingSahil" />
 
     <script is:inline>

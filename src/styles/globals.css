@@ -1,101 +1,171 @@
 @import "tailwindcss";
 
+/* The theme toggle sets a .dark class, so dark: must key off that
+   rather than Tailwind v4's default prefers-color-scheme media query. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ---------------------------------------------------------------
+   Manifest system — a personal directory rendered like an archive
+   card: warm paper, ink, a single stamp-ink accent, mono catalog
+   tags. See MEMORY / design notes for rationale.
+------------------------------------------------------------------ */
+
 :root {
-  --background: #fdfdfb;
-  --foreground: #3a5a40;
-  --color-primary: #7ba072;
-  --color-accent: #c2cdb1;
-  --color-cream: #ffffff;
-  --color-earth: #3a5a40;
+  --background: #f6f4ee;
+  --surface: #fffdf8;
+  --foreground: #1a1f2b;
+  --color-primary: #c8862c;
+  --color-primary-soft: #e3a62f;
+  --color-stamp: #b8452f;
+  --color-accent: #c8862c;
+  --color-cream: #fffdf8;
+  --color-earth: #1a1f2b;
+  --color-line: rgba(26, 31, 43, 0.13);
+  --shadow-color: 26 31 43;
 }
 
 :root.dark {
-  --background: #0a0a0a;
-  --foreground: #ffffff;
-  --color-primary: #8ab67d;
-  --color-accent: #c2d1ad;
-  --color-cream: #171717;
-  --color-earth: #f0f0f0;
+  --background: #131319;
+  --surface: #1b1b22;
+  --foreground: #ece9e0;
+  --color-primary: #f0b94e;
+  --color-primary-soft: #f0b94e;
+  --color-stamp: #e37456;
+  --color-accent: #f0b94e;
+  --color-cream: #1b1b22;
+  --color-earth: #ece9e0;
+  --color-line: rgba(236, 233, 224, 0.14);
+  --shadow-color: 0 0 0;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+  --font-display: "Space Grotesk", "Inter", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", "SFMono-Regular", Menlo, monospace;
   --color-primary: var(--color-primary);
   --color-accent: var(--color-accent);
   --color-cream: var(--color-cream);
   --color-earth: var(--color-earth);
+  --color-stamp: var(--color-stamp);
+}
+
+* {
+  border-color: var(--color-line);
 }
 
 body {
   min-height: 100dvh;
   background-color: var(--background);
   background-image:
-    radial-gradient(at 0% 0%, rgba(194, 205, 177, 0.08) 0, transparent 40%),
-    radial-gradient(at 100% 100%, rgba(123, 160, 114, 0.06) 0, transparent 40%),
-    radial-gradient(at 50% 50%, rgba(255, 255, 255, 0.3) 0, transparent 100%);
+    radial-gradient(circle at 1px 1px, rgba(26, 31, 43, 0.07) 1px, transparent 0);
+  background-size: 22px 22px;
   background-attachment: fixed;
   color: var(--color-earth);
-  font-family:
-    var(--font-sans),
-    system-ui,
-    -apple-system,
-    BlinkMacSystemFont,
-    "Plus Jakarta Sans",
-    sans-serif;
+  font-family: var(--font-sans);
   overflow-x: hidden;
 }
 
 .dark body {
   background-image:
-    radial-gradient(at 0% 0%, rgba(138, 182, 125, 0.08) 0, transparent 40%),
-    radial-gradient(at 100% 100%, rgba(107, 142, 97, 0.05) 0, transparent 40%),
-    radial-gradient(at 50% 10%, rgba(23, 23, 23, 1) 0, transparent 80%);
+    radial-gradient(circle at 1px 1px, rgba(236, 233, 224, 0.06) 1px, transparent 0);
+  background-size: 22px 22px;
 }
 
-.glass {
-  background: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+.font-display {
+  font-family: var(--font-display);
 }
 
-.dark .glass {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+.font-mono {
+  font-family: var(--font-mono);
+}
+
+/* Flat "manifest card" surface — hairline border, no blur, a slow lift on hover */
+.card {
+  background: var(--surface);
+  border: 1.5px solid var(--color-line);
+  box-shadow: 0 1px 2px rgba(var(--shadow-color) / 0.04);
+  transition:
+    transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+    background 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(200, 134, 44, 0.5);
+  box-shadow: 0 10px 24px -8px rgba(var(--shadow-color) / 0.16);
+}
+
+.dark .card:hover {
+  border-color: rgba(240, 185, 78, 0.4);
+  box-shadow: 0 10px 24px -8px rgba(0, 0, 0, 0.45);
+}
+
+/* Catalog tag — the recurring "stamped index number" signature element */
+.catalog-tag {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  line-height: 1;
 }
 
 .profile-glow {
-  box-shadow: 0 0 40px rgba(107, 142, 97, 0.15);
-  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0 0 6px rgba(200, 134, 44, 0.08);
+  transition: box-shadow 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .dark .profile-glow {
-  box-shadow: 0 0 40px rgba(138, 182, 125, 0.1);
+  box-shadow: 0 0 0 6px rgba(240, 185, 78, 0.08);
 }
 
-.glass:hover {
-  background: rgba(255, 255, 255, 0.3);
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  transform: translateY(-2px);
-  box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.1);
-}
-
-.dark .glass:hover {
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+/* Keyboard focus — always visible, never suppressed */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 3px;
+  border-radius: 4px;
 }
 
 ::selection {
   background: var(--color-primary);
-  color: white;
+  color: var(--color-cream);
 }
 
 ::-webkit-scrollbar {
   width: 0px;
+}
+
+/* Staggered entrance sequence */
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.rise-in {
+  animation: rise-in 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rise-in {
+    animation: none;
+  }
+  .card,
+  .profile-glow {
+    transition: none;
+  }
+}
+
+button, a {
+  cursor: pointer;
 }

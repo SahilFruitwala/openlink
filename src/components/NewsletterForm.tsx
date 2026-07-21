@@ -4,6 +4,7 @@ import { useState } from "react";
 import { newsletter } from "../config/openlink";
 import { posthog } from "../lib/posthogClient";
 import { getTrackingContext } from "../lib/tracking";
+import { SectionHeader } from "./SectionHeader";
 
 function showNewsletterSection(): boolean {
   if (newsletter.provider === "beehiiv") return true;
@@ -86,19 +87,21 @@ export function NewsletterForm() {
   };
 
   return (
-    <section className="glass relative flex w-full flex-col overflow-hidden rounded-3xl border border-white/40 bg-white/30 p-6 transition-all hover:bg-white/40 dark:border-white/10 dark:bg-white/5 dark:hover:bg-white/10">
+    <section aria-label="Newsletter signup" className="pt-2">
+      <SectionHeader index="04" label="Stay looped" />
+      <div className="card relative mt-2 flex w-full flex-col overflow-hidden rounded-[1.75rem] p-6">
       <div className="relative z-10 space-y-2 text-center">
-        <div className="mx-auto mb-2 flex h-10 w-10 items-center justify-center rounded-2xl bg-primary/10 text-primary dark:bg-primary/20">
+        <div className="mx-auto mb-2 flex h-10 w-10 items-center justify-center rounded-2xl border border-earth/10 bg-primary/10 text-primary dark:border-white/10 dark:bg-primary/15">
           <span className="text-xl">✉️</span>
         </div>
-        <h2 className="text-lg font-bold tracking-tight text-earth dark:text-earth">
+        <h2 className="font-display text-lg font-bold tracking-tight text-earth dark:text-earth">
           Join the Inner Circle
         </h2>
         <p className="mx-auto max-w-[280px] text-xs font-medium leading-relaxed text-earth/60 dark:text-earth/70">
           Exclusive updates about what I&apos;m building, reading, and learning.
         </p>
       </div>
-      
+
       {success ? (
         <div className="relative z-10 mt-6 space-y-3 text-center">
           <div className="flex items-center justify-center gap-2 text-sm font-bold text-primary dark:text-primary">
@@ -137,31 +140,32 @@ export function NewsletterForm() {
             disabled={submitting}
             className="
               h-12 w-full appearance-none rounded-2xl
-              bg-white/50 px-4 text-sm font-bold text-earth
-              placeholder:text-earth/30
-              border border-earth/5
-              focus:border-primary/40
+              bg-earth/[0.03] px-4 text-sm font-semibold text-earth
+              placeholder:text-earth/35 placeholder:font-medium
+              border border-earth/10
+              focus:border-primary/50
               focus:outline-none
-              dark:bg-white/10
-              dark:border-white/5
-              dark:placeholder:text-earth/40
+              dark:bg-white/5
+              dark:border-white/10
+              dark:placeholder:text-earth/35
               disabled:opacity-60
               transition-all"
           />
           <button
             type="submit"
             disabled={submitting}
-            className="h-12 w-full rounded-2xl bg-earth px-4 text-xs font-extrabold uppercase tracking-widest text-cream shadow-lg transition-all hover:bg-earth/90 active:scale-[0.98] disabled:opacity-60 dark:bg-primary dark:text-white"
+            className="h-12 w-full rounded-2xl bg-earth px-4 font-mono text-xs font-semibold uppercase tracking-widest text-cream shadow-lg transition-all hover:opacity-90 active:scale-[0.98] disabled:opacity-60 dark:bg-primary dark:text-[#131319]"
           >
             {submitting ? "Joining..." : "Subscribe"}
           </button>
         </form>
       )}
       {error && (
-        <p className="relative z-10 mt-3 text-center text-[11px] font-bold text-red-500/80">
+        <p className="relative z-10 mt-3 text-center text-[11px] font-bold text-stamp/90">
           {error}
         </p>
       )}
+      </div>
     </section>
   );
 }

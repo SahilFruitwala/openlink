@@ -15,14 +15,19 @@ export default function Home() {
 
         <ProfileHeader />
 
-        <div className="space-y-4 px-4">
+        <div className="space-y-6 px-4">
           <SocialRow />
           <FeaturedLinks />
           <LinkList />
-
           <NewsletterForm />
           <EmbedsSection />
         </div>
+
+        <footer className="mt-10 px-4 text-center">
+          <p className="font-mono text-[10px] font-medium uppercase tracking-[0.2em] text-earth/30 dark:text-earth/30">
+            — end of manifest —
+          </p>
+        </footer>
       </main>
     </div>
   );

@@ -3,6 +3,7 @@
 import { socialLinks } from "../config/openlink";
 import type { SocialType } from "../config/openlink";
 import { TrackedLink } from "./TrackedLink";
+import { SectionHeader } from "./SectionHeader";
 
 type IconProps = { type: SocialType };
 
@@ -78,21 +79,25 @@ export function SocialRow() {
   if (!socialLinks.length) return null;
 
   return (
-    <section className="flex flex-wrap items-center justify-center gap-4 py-2">
-      {socialLinks.map((link) => (
-        <TrackedLink
-          key={`${link.type}-${link.href}`}
-          href={link.href}
-          label={link.label}
-          section="social"
-          extraUTM={{ utm_content: "social" }}
-          className="group glass flex h-12 w-12 items-center justify-center rounded-full transition-all hover:scale-110 hover:bg-white/50 dark:hover:bg-white/10"
-        >
-          <div className="text-earth transition-colors group-hover:text-primary dark:text-earth dark:group-hover:text-primary">
-            <SocialIcon type={link.type} />
-          </div>
-        </TrackedLink>
-      ))}
+    <section aria-label="Social links">
+      <SectionHeader index="01" label="Elsewhere" />
+      <div className="flex flex-wrap items-center justify-center gap-3 pb-1 pt-2">
+        {socialLinks.map((link, i) => (
+          <TrackedLink
+            key={`${link.type}-${link.href}`}
+            href={link.href}
+            label={link.label}
+            section="social"
+            extraUTM={{ utm_content: "social" }}
+            className="card rise-in group flex h-12 w-12 items-center justify-center rounded-2xl"
+            style={{ animationDelay: `${180 + i * 40}ms` }}
+          >
+            <div className="text-earth/70 transition-colors group-hover:text-primary dark:text-earth/70 dark:group-hover:text-primary">
+              <SocialIcon type={link.type} />
+            </div>
+          </TrackedLink>
+        ))}
+      </div>
     </section>
   );
 }

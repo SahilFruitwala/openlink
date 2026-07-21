@@ -110,13 +110,6 @@ export const links: LinkItem[] = [
     logoStyle: "app",
   },
   {
-    label: "Cozydo",
-    href: "https://apps.apple.com/ca/app/cozydo-calm-task-habits/id6774354264",
-    description: "Calm Task & Habit Tracker",
-    logoUrl: "/logos/cozydo.jpg",
-    logoStyle: "app",
-  },
-  {
     label: "MicroPNG",
     href: "https://micropng.sahilfruitwala.com",
     description: "Compress, Convert & Resize Images",
