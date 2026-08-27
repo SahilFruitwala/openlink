@@ -4,7 +4,7 @@ Thanks for your interest in contributing. This document explains how to get set 
 
 ## What is OpenLink?
 
-OpenLink is a minimal link-in-bio page: one config-driven page for profile, social links, featured links, newsletter (Beehiiv), and embeds, with optional PostHog analytics and UTM tracking.
+OpenLink is a minimal link-in-bio page: profile, social links, featured links, newsletter (Beehiiv), and embeds, with optional PostHog analytics and UTM tracking. Page content lives in `src/config/content.json` (optionally synced from Notion — see [docs/NOTION.md](docs/NOTION.md)).
 
 ## Prerequisites
 
@@ -37,12 +37,15 @@ OpenLink is a minimal link-in-bio page: one config-driven page for profile, soci
    # or: pnpm dev / yarn dev / bun dev
    ```
 
-   Open [http://localhost:3000](http://localhost:3000). Edit `src/config/openlink.ts` to change content.
+   Open [http://localhost:4321](http://localhost:4321). Edit Notion (preferred) or `src/config/content.json` to change links.
 
 ## Project structure
 
-- **`src/config/openlink.ts`** — Single source of truth: profile, social links, featured links, links, newsletter config, embeds.
-- **`src/app/`** — Next.js App Router: layout, page, API route for newsletter, PostHog provider.
+- **`src/config/content.json`** — Profile, social, featured, project links, embeds (synced from Notion).
+- **`src/config/openlink.ts`** — Types + re-exports from `content.json`; newsletter config stays here.
+- **`scripts/sync-notion.mjs`** — Pulls Notion → `content.json`.
+- **`.github/workflows/sync-links.yml`** — Scheduled / manual Notion sync.
+- **`src/pages/`** — Astro pages + newsletter API route.
 - **`src/components/`** — UI: ProfileHeader, SocialRow, Links, NewsletterForm, ThemeToggle, TrackedLink, EmbedsSection.
 - **`src/lib/`** — Utilities: PostHog client, UTM/tracking helpers.
 

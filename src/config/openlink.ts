@@ -1,3 +1,5 @@
+import content from "./content.json";
+
 export type SocialType =
   | "twitter"
   | "github"
@@ -55,83 +57,32 @@ export type EmbedItem = {
   src: string;
 };
 
-export const profile = {
-  name: "Sahil Fruitwala",
-  handle: "@SahilBeingSahil",
-  role: "Developer & Creator",
-  avatarUrl: "/profile.webp",
-  bio: "Building the future of digital expression, one pixel at a time.",
+export type Profile = {
+  name: string;
+  handle: string;
+  role: string;
+  avatarUrl: string;
+  bio: string;
 };
 
-export const socialLinks: SocialLink[] = [
-  {
-    type: "twitter",
-    label: "X (Twitter)",
-    href: "https://inapp.app/sahil/twitter",
-  },
-  {
-    type: "github",
-    label: "GitHub",
-    href: "https://github.com/SahilFruitwala",
-  },
-  {
-    type: "youtube",
-    label: "YouTube",
-    href: "https://inapp.app/sahil/youtube",
-  },
-  {
-    type: "linkedin",
-    label: "LinkedIn",
-    href: "https://inapp.app/sahil/linkedin",
-  },
-  {
-    type: "instagram",
-    label: "Instagram",
-    href: "https://inapp.app/sahil/instagram",
-  },
-];
+export type OpenLinkContent = {
+  syncedAt: string | null;
+  source: string;
+  profile: Profile;
+  socialLinks: SocialLink[];
+  featuredLinks: FeaturedLink[];
+  links: LinkItem[];
+  embeds: EmbedItem[];
+};
 
-export const featuredLinks: FeaturedLink[] = [
-  {
-    label: "Personal Website",
-    href: "https://sahilfruitwala.com/",
-    description: "Blog & Thoughts",
-    highlightKey: "blog",
-    iconEmoji: "◈",
-  },
-];
+/** Link/page content. Synced from Notion via `npm run sync:notion` / GitHub Action. */
+export const profile = content.profile as Profile;
+export const socialLinks = content.socialLinks as SocialLink[];
+export const featuredLinks = content.featuredLinks as FeaturedLink[];
+export const links = content.links as LinkItem[];
+export const embeds = content.embeds as EmbedItem[];
 
-export const links: LinkItem[] = [
-  {
-    label: "DuoCamRecorder",
-    href: "https://apps.apple.com/us/app/duocamrecorder/id6774351529",
-    description: "Record 16:9 & 9:16 Together",
-    logoUrl: "/logos/duocamrecorder.png",
-    logoStyle: "app",
-  },
-  {
-    label: "MicroPNG",
-    href: "https://micropng.sahilfruitwala.com",
-    description: "Compress, Convert & Resize Images",
-    logoUrl: "/logos/micropng.webp",
-    logoStyle: "app",
-  },
-  // {
-  //   label: "InfiniteResume",
-  //   href: "https://infiniteresume.sahilfruitwala.com",
-  //   description: "Generate & Optimize Your Resume",
-  //   iconEmoji: "◍",
-  // },
-];
-
+/** Newsletter stays local — needs Beehiiv API keys, not CMS content. */
 export const newsletter: NewsletterConfig = {
   provider: "beehiiv",
 };
-
-export const embeds: EmbedItem[] = [
-  // {
-  //   type: "youtube",
-  //   title: "Latest YouTube video",
-  //   src: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-  // },
-];

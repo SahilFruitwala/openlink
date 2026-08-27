@@ -1,0 +1,64 @@
+{
+  "syncedAt": null,
+  "source": "seed",
+  "profile": {
+    "name": "Sahil Fruitwala",
+    "handle": "@SahilBeingSahil",
+    "role": "Developer & Creator",
+    "avatarUrl": "/profile.webp",
+    "bio": "Building the future of digital expression, one pixel at a time."
+  },
+  "socialLinks": [
+    {
+      "type": "twitter",
+      "label": "X (Twitter)",
+      "href": "https://inapp.app/sahil/twitter"
+    },
+    {
+      "type": "github",
+      "label": "GitHub",
+      "href": "https://github.com/SahilFruitwala"
+    },
+    {
+      "type": "youtube",
+      "label": "YouTube",
+      "href": "https://inapp.app/sahil/youtube"
+    },
+    {
+      "type": "linkedin",
+      "label": "LinkedIn",
+      "href": "https://inapp.app/sahil/linkedin"
+    },
+    {
+      "type": "instagram",
+      "label": "Instagram",
+      "href": "https://inapp.app/sahil/instagram"
+    }
+  ],
+  "featuredLinks": [
+    {
+      "label": "Personal Website",
+      "href": "https://sahilfruitwala.com/",
+      "description": "Blog & Thoughts",
+      "highlightKey": "blog",
+      "iconEmoji": "◈"
+    }
+  ],
+  "links": [
+    {
+      "label": "DuoCamRecorder",
+      "href": "https://apps.apple.com/us/app/duocamrecorder/id6774351529",
+      "description": "Record 16:9 & 9:16 Together",
+      "logoUrl": "/logos/duocamrecorder.png",
+      "logoStyle": "app"
+    },
+    {
+      "label": "MicroPNG",
+      "href": "https://micropng.sahilfruitwala.com",
+      "description": "Compress, Convert & Resize Images",
+      "logoUrl": "/logos/micropng.webp",
+      "logoStyle": "app"
+    }
+  ],
+  "embeds": []
+}
