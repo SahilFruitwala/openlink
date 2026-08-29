@@ -84,6 +84,7 @@ function getSelect(page, name) {
   if (!p) return "";
   if (p.type === "select") return (p.select?.name || "").trim().toLowerCase();
   if (p.type === "status") return (p.status?.name || "").trim().toLowerCase();
+  if (p.type === "rich_text") return plainText(p.rich_text).trim().toLowerCase();
   return "";
 }
 
@@ -96,7 +97,7 @@ function getNumber(page, name) {
 function getCheckbox(page, name, defaultValue = true) {
   const p = prop(page, name);
   if (!p || p.type !== "checkbox") return defaultValue;
-  return Boolean(p.checked);
+  return Boolean(p.checkbox);
 }
 
 function optionalString(value) {

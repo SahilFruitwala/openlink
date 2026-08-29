@@ -55,7 +55,20 @@ Newsletter signup stays in code (`openlink.ts`) because it needs Beehiiv API key
    `https://www.notion.so/workspace/XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX?v=…`  
    → `NOTION_DATABASE_ID` is the 32-character hex block (dashes optional)
 
-## 3. Local sync
+## 3. Bootstrap from existing content
+
+If you already have `src/config/content.json` and want to copy it into Notion once:
+
+```bash
+export NOTION_TOKEN="secret_…"
+export NOTION_DATABASE_ID="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+npm run seed:notion -- --from-git   # use committed seed content
+# or: npm run seed:notion           # use current content.json
+```
+
+Matching rows (same **Section** + **Name**) are updated; others are created.
+
+## 4. Local sync
 
 ```bash
 export NOTION_TOKEN="secret_…"
@@ -65,7 +78,7 @@ npm run sync:notion
 
 This overwrites `src/config/content.json`. Commit the file if you want the change in git immediately.
 
-## 4. GitHub Action
+## 5. GitHub Action
 
 Repo → **Settings** → **Secrets and variables** → **Actions** → add:
 

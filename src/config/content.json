@@ -1,11 +1,11 @@
 {
-  "syncedAt": null,
-  "source": "seed",
+  "syncedAt": "2026-08-29T13:41:47.086Z",
+  "source": "notion",
   "profile": {
     "name": "Sahil Fruitwala",
     "handle": "@SahilBeingSahil",
     "role": "Developer & Creator",
-    "avatarUrl": "/profile.webp",
+    "avatarUrl": "https://openlink.sahilfruitwala.com/profile.webp",
     "bio": "Building the future of digital expression, one pixel at a time."
   },
   "socialLinks": [
@@ -49,14 +49,14 @@
       "label": "DuoCamRecorder",
       "href": "https://apps.apple.com/us/app/duocamrecorder/id6774351529",
       "description": "Record 16:9 & 9:16 Together",
-      "logoUrl": "/logos/duocamrecorder.png",
+      "logoUrl": "https://openlink.sahilfruitwala.com/logos/duocamrecorder.png",
       "logoStyle": "app"
     },
     {
       "label": "MicroPNG",
       "href": "https://micropng.sahilfruitwala.com",
       "description": "Compress, Convert & Resize Images",
-      "logoUrl": "/logos/micropng.webp",
+      "logoUrl": "https://openlink.sahilfruitwala.com/logos/micropng.webp",
       "logoStyle": "app"
     }
   ],

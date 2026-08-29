@@ -8,6 +8,7 @@
     "preview": "astro preview",
     "astro": "astro",
     "lint": "eslint",
+    "seed:notion": "node scripts/seed-notion.mjs",
     "sync:notion": "node scripts/sync-notion.mjs"
   },
   "dependencies": {
