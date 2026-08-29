@@ -17,6 +17,21 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, "..");
 const OUT_PATH = resolve(ROOT, "src/config/content.json");
 const NOTION_VERSION = "2022-06-28";
+const SITE_HOSTS = new Set(["openlink.sahilfruitwala.com", "localhost", "127.0.0.1"]);
+
+function normalizeAssetUrl(url) {
+  const v = (url || "").trim();
+  if (!v || v.startsWith("/")) return v;
+  try {
+    const parsed = new URL(v);
+    if (SITE_HOSTS.has(parsed.hostname)) {
+      return `${parsed.pathname}${parsed.search}${parsed.hash}`;
+    }
+  } catch {
+    // Keep invalid URLs as-is so callers can surface them.
+  }
+  return v;
+}
 
 const SOCIAL_TYPES = new Set([
   "twitter",
@@ -151,7 +166,9 @@ function mapPage(page) {
   const badge = optionalString(getRichText(page, "Badge"));
   const highlightKey = optionalString(getRichText(page, "Highlight Key"));
   const iconEmoji = optionalString(getRichText(page, "Icon Emoji"));
-  const logoUrl = optionalString(getUrl(page, "Logo URL") || getRichText(page, "Logo URL"));
+  const logoUrl = optionalString(
+    normalizeAssetUrl(getUrl(page, "Logo URL") || getRichText(page, "Logo URL")),
+  );
   const logoStyleRaw = getSelect(page, "Logo Style");
   const logoStyle = LOGO_STYLES.has(logoStyleRaw) ? logoStyleRaw : undefined;
   const socialType = getSelect(page, "Social Type");
@@ -159,7 +176,7 @@ function mapPage(page) {
   const handle = optionalString(getRichText(page, "Handle"));
   const role = optionalString(getRichText(page, "Role"));
   const avatarUrl = optionalString(
-    getUrl(page, "Avatar URL") || getRichText(page, "Avatar URL"),
+    normalizeAssetUrl(getUrl(page, "Avatar URL") || getRichText(page, "Avatar URL")),
   );
 
   return {

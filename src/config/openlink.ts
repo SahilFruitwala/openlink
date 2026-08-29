@@ -1,5 +1,21 @@
 import content from "./content.json";
 
+const SITE_HOSTS = new Set(["openlink.sahilfruitwala.com", "localhost", "127.0.0.1"]);
+
+function normalizeAssetUrl(url: string): string {
+  const v = url.trim();
+  if (!v || v.startsWith("/")) return v;
+  try {
+    const parsed = new URL(v);
+    if (SITE_HOSTS.has(parsed.hostname)) {
+      return `${parsed.pathname}${parsed.search}${parsed.hash}`;
+    }
+  } catch {
+    // Keep invalid URLs as-is.
+  }
+  return v;
+}
+
 export type SocialType =
   | "twitter"
   | "github"
@@ -75,11 +91,20 @@ export type OpenLinkContent = {
   embeds: EmbedItem[];
 };
 
+function withNormalizedLogo<T extends { logoUrl?: string }>(link: T): T {
+  return link.logoUrl
+    ? { ...link, logoUrl: normalizeAssetUrl(link.logoUrl) }
+    : link;
+}
+
 /** Link/page content. Synced from Notion via `npm run sync:notion` / GitHub Action. */
-export const profile = content.profile as Profile;
+export const profile = {
+  ...content.profile,
+  avatarUrl: normalizeAssetUrl(content.profile.avatarUrl),
+} as Profile;
 export const socialLinks = content.socialLinks as SocialLink[];
-export const featuredLinks = content.featuredLinks as FeaturedLink[];
-export const links = content.links as LinkItem[];
+export const featuredLinks = (content.featuredLinks as FeaturedLink[]).map(withNormalizedLogo);
+export const links = (content.links as LinkItem[]).map(withNormalizedLogo);
 export const embeds = content.embeds as EmbedItem[];
 
 /** Newsletter stays local — needs Beehiiv API keys, not CMS content. */
