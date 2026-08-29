@@ -7,7 +7,9 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "lint": "eslint"
+    "lint": "eslint",
+    "seed:notion": "node scripts/seed-notion.mjs",
+    "sync:notion": "node scripts/sync-notion.mjs"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.6",

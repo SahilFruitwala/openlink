@@ -1,0 +1,47 @@
+name: Sync links from Notion
+
+on:
+  # Edit links in Notion; this picks them up without a manual deploy.
+  schedule:
+    - cron: "0 */6 * * *"
+  workflow_dispatch:
+  # Optional: also sync before builds when secrets are present (no-op locally).
+  # push:
+  #   branches: [main]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-links
+  cancel-in-progress: true
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Sync from Notion
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          NOTION_DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}
+        run: node scripts/sync-notion.mjs
+
+      - name: Commit content.json if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/config/content.json
+          if git diff --staged --quiet; then
+            echo "No content changes."
+            exit 0
+          fi
+          git commit -m "chore: sync OpenLink content from Notion"
+          git push
