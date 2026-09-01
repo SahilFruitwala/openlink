@@ -1,5 +1,5 @@
 {
-  "syncedAt": "2026-08-31T22:40:55.274Z",
+  "syncedAt": "2026-09-01T01:35:39.044Z",
   "source": "notion",
   "profile": {
     "name": "Sahil Fruitwala",
@@ -58,6 +58,11 @@
       "description": "Compress, Convert & Resize Images",
       "logoUrl": "/logos/micropng.webp",
       "logoStyle": "app"
+    },
+    {
+      "label": "Shelf",
+      "href": "https://shelf.sahilfruitwala.com/",
+      "description": "Save wishlist and entertainment"
     }
   ],
   "embeds": []
