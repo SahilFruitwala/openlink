@@ -1,5 +1,5 @@
 {
-  "syncedAt": "2026-10-07T13:00:23.473Z",
+  "syncedAt": "2026-10-07T22:55:47.507Z",
   "source": "notion",
   "profile": {
     "name": "Sahil Fruitwala",
@@ -60,9 +60,9 @@
       "logoStyle": "app"
     },
     {
-      "label": "Shelf",
-      "href": "https://shelf.sahilfruitwala.com/",
-      "description": "Save wishlist and entertainment"
+      "label": "Kami",
+      "href": "https://kami.sahilfruitwala.com/",
+      "description": "A quiet digital sanctuary for reading, inking, and unhurried thought."
     }
   ],
   "embeds": []
