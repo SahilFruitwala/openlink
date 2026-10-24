@@ -32,7 +32,9 @@ You can also edit `src/config/content.json` directly; the site keeps working wit
 Set in `.env` (see `.env.example`):
 
 - `PUBLIC_POSTHOG_KEY` — Project API key
-- `PUBLIC_POSTHOG_HOST` — Optional (EU / self-hosted)
+- `PUBLIC_POSTHOG_HOST` — Optional (defaults to `https://us.i.posthog.com`; use `https://eu.i.posthog.com` for EU)
+
+These are inlined at build time, so on Cloudflare set them as build variables (Workers Builds → Settings → Variables), not only runtime secrets. Analytics is disabled in `astro dev`.
 
 ### Newsletter (Beehiiv)
 

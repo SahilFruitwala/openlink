@@ -20,7 +20,7 @@
     "@astrojs/tailwind": "^6.0.2",
     "@tailwindcss/vite": "^4.1.18",
     "astro": "^5.17.2",
-    "posthog-js": "^1.347.2",
+    "posthog-js": "^1.438.21",
     "react": "19.0.0",
     "react-dom": "19.0.0"
   },
