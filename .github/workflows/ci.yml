@@ -1,0 +1,30 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+      - run: bun install --frozen-lockfile
+      - name: Validate synced content
+        run: node scripts/validate-content.mjs
+      - name: Syntax-check scripts
+        run: |
+          node --check scripts/sync-notion.mjs
+          node --check scripts/validate-content.mjs
+      - name: Build
+        run: bun run build

@@ -5,20 +5,25 @@ on:
   schedule:
     - cron: "0 */6 * * *"
   workflow_dispatch:
-  # Optional: also sync before builds when secrets are present (no-op locally).
-  # push:
-  #   branches: [main]
+    inputs:
+      allow_shrink:
+        description: "Accept a large drop in link count"
+        type: boolean
+        default: false
 
 permissions:
   contents: write
+  issues: write
 
+# Never cancel a run mid-push; queue the next one instead.
 concurrency:
   group: sync-links
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   sync:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     environment: production
     steps:
       - name: Checkout
@@ -33,7 +38,11 @@ jobs:
         env:
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
           NOTION_DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}
+          ALLOW_SHRINK: ${{ inputs.allow_shrink && '1' || '0' }}
         run: node scripts/sync-notion.mjs
+
+      - name: Validate content
+        run: node scripts/validate-content.mjs
 
       - name: Commit content.json if changed
         run: |
@@ -41,8 +50,40 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add src/config/content.json
           if git diff --staged --quiet; then
-            echo "No content changes."
+            echo "No content changes." >> "$GITHUB_STEP_SUMMARY"
             exit 0
           fi
           git commit -m "chore: sync OpenLink content from Notion"
-          git push
+          # Rebase onto anything pushed while we were running, retry on a race.
+          for attempt in 1 2 3; do
+            git pull --rebase origin "${GITHUB_REF_NAME}" && git push && break
+            echo "Push attempt $attempt failed; retrying…"
+            sleep $((attempt * 5))
+            if [ "$attempt" = 3 ]; then exit 1; fi
+          done
+          echo "Content synced and pushed." >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Report failure
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          title="Notion sync is failing"
+          # One open issue at a time; later failures add a comment.
+          existing=$(gh issue list --state open --search "\"$title\" in:title" --json number --jq '.[0].number // empty')
+          body="Run failed: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+          if [ -n "$existing" ]; then
+            gh issue comment "$existing" --body "$body"
+          else
+            gh issue create --title "$title" --body "$body"
+          fi
+
+      - name: Close failure issue after recovery
+        if: success()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          existing=$(gh issue list --state open --search "\"Notion sync is failing\" in:title" --json number --jq '.[0].number // empty')
+          if [ -n "$existing" ]; then
+            gh issue close "$existing" --comment "Sync succeeded again: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+          fi

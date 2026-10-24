@@ -9,7 +9,7 @@
  * See docs/NOTION.md for database property setup.
  */
 
-import { writeFileSync, readFileSync } from "node:fs";
+import { writeFileSync, readFileSync, renameSync, appendFileSync } from "node:fs";
 import { resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -120,22 +120,57 @@ function optionalString(value) {
   return v || undefined;
 }
 
-async function notionFetch(path, token, init = {}) {
-  const res = await fetch(`https://api.notion.com/v1${path}`, {
-    ...init,
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "Notion-Version": NOTION_VERSION,
-      "Content-Type": "application/json",
-      ...(init.headers || {}),
-    },
-  });
-  const body = await res.json().catch(() => ({}));
-  if (!res.ok) {
-    const msg = body?.message || res.statusText;
-    throw new Error(`Notion API ${res.status} ${path}: ${msg}`);
+const LINK_PROTOCOLS = new Set(["http:", "https:", "mailto:", "tel:"]);
+
+/** Returns the trimmed URL if it is a safe, absolute link; otherwise "". */
+function safeLinkUrl(value) {
+  const v = (value || "").trim();
+  try {
+    return LINK_PROTOCOLS.has(new URL(v).protocol) ? v : "";
+  } catch {
+    return "";
   }
-  return body;
+}
+
+const MAX_ATTEMPTS = 5;
+const REQUEST_TIMEOUT_MS = 20_000;
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+/** Retries 429/5xx and network failures with backoff; honours Retry-After. */
+async function notionFetch(path, token, init = {}) {
+  let lastError;
+  for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+    let retryAfterMs = 0;
+    try {
+      const res = await fetch(`https://api.notion.com/v1${path}`, {
+        ...init,
+        signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Notion-Version": NOTION_VERSION,
+          "Content-Type": "application/json",
+          ...(init.headers || {}),
+        },
+      });
+      const body = await res.json().catch(() => ({}));
+      if (res.ok) return body;
+
+      const msg = body?.message || res.statusText;
+      lastError = new Error(`Notion API ${res.status} ${path}: ${msg}`);
+      const retryable = res.status === 429 || res.status >= 500;
+      if (!retryable) throw lastError;
+      retryAfterMs = Number(res.headers.get("retry-after") || 0) * 1000;
+    } catch (err) {
+      if (err === lastError) throw err; // non-retryable API error
+      lastError = err; // network error or timeout
+    }
+    if (attempt < MAX_ATTEMPTS) {
+      const delay = Math.max(retryAfterMs, 1000 * 2 ** (attempt - 1));
+      console.warn(`Attempt ${attempt} failed (${lastError.message}); retrying in ${delay}ms…`);
+      await sleep(delay);
+    }
+  }
+  throw lastError;
 }
 
 async function queryAllPages(token, databaseId) {
@@ -161,7 +196,7 @@ function mapPage(page) {
   const enabled = getCheckbox(page, "Enabled", true);
   const order = getNumber(page, "Order");
   const label = getTitle(page);
-  const href = getUrl(page, "URL");
+  const href = safeLinkUrl(getUrl(page, "URL"));
   const description = optionalString(getRichText(page, "Description"));
   const badge = optionalString(getRichText(page, "Badge"));
   const highlightKey = optionalString(getRichText(page, "Highlight Key"));
@@ -223,7 +258,7 @@ function buildContent(pages, previous) {
     .map((r) => {
       const type = SOCIAL_TYPES.has(r.socialType) ? r.socialType : "custom";
       if (!r.label || !r.href) {
-        console.warn(`Skipping social row missing Name/URL: ${r.id}`);
+        console.warn(`Skipping social row "${r.label}" with missing/invalid Name or URL: ${r.id}`);
         return null;
       }
       return { type, label: r.label, href: r.href };
@@ -234,7 +269,7 @@ function buildContent(pages, previous) {
     .filter((r) => r.section === "featured")
     .map((r) => {
       if (!r.label || !r.href) {
-        console.warn(`Skipping featured row missing Name/URL: ${r.id}`);
+        console.warn(`Skipping featured row "${r.label}" with missing/invalid Name or URL: ${r.id}`);
         return null;
       }
       return {
@@ -254,7 +289,7 @@ function buildContent(pages, previous) {
     .filter((r) => r.section === "project")
     .map((r) => {
       if (!r.label || !r.href) {
-        console.warn(`Skipping project row missing Name/URL: ${r.id}`);
+        console.warn(`Skipping project row "${r.label}" with missing/invalid Name or URL: ${r.id}`);
         return null;
       }
       return {
@@ -272,8 +307,8 @@ function buildContent(pages, previous) {
     .filter((r) => r.section === "embed")
     .map((r) => {
       const type = EMBED_TYPES.has(r.embedType) ? r.embedType : "iframe";
-      if (!r.label || !r.href) {
-        console.warn(`Skipping embed row missing Name/URL: ${r.id}`);
+      if (!r.label || !r.href.startsWith("https:")) {
+        console.warn(`Skipping embed row "${r.label}" with missing/invalid Name or URL: ${r.id}`);
         return null;
       }
       return { type, title: r.label, src: r.href };
@@ -287,6 +322,18 @@ function buildContent(pages, previous) {
   if (!hasAnyLinks) {
     throw new Error(
       "Notion returned no enabled social/featured/project rows. Refusing to overwrite content.json.",
+    );
+  }
+
+  // Safety: a sudden collapse usually means a broken filter or lost access,
+  // not an intentional edit. Set ALLOW_SHRINK=1 to accept it.
+  const count = (c) =>
+    (c.socialLinks?.length ?? 0) + (c.featuredLinks?.length ?? 0) + (c.links?.length ?? 0);
+  const before = count(previous);
+  const after = socialLinks.length + featuredLinks.length + links.length;
+  if (before >= 4 && after < before / 2 && process.env.ALLOW_SHRINK !== "1") {
+    throw new Error(
+      `Link count dropped from ${before} to ${after}. Refusing to overwrite content.json (set ALLOW_SHRINK=1 to accept).`,
     );
   }
 
@@ -353,27 +400,25 @@ async function main() {
 
   console.log(`Fetched ${pages.length} page(s).`);
   const next = buildContent(pages, previous);
-  const nextText = stableStringify(next);
+  const comparable = (c) => JSON.stringify({ ...c, syncedAt: null });
+  const changed = comparable(previous) !== comparable(next);
 
-  const prevComparable = { ...previous, syncedAt: null };
-  const nextComparable = { ...next, syncedAt: null };
-  const changed =
-    JSON.stringify(prevComparable) !== JSON.stringify(nextComparable);
-
-  writeFileSync(OUT_PATH, nextText, "utf8");
+  if (changed) {
+    const tmp = `${OUT_PATH}.tmp`;
+    writeFileSync(tmp, stableStringify(next), "utf8");
+    renameSync(tmp, OUT_PATH);
+  }
 
   console.log(
-    `Wrote ${OUT_PATH}` +
+    `${changed ? "Wrote" : "No changes to"} ${OUT_PATH}` +
       `\n  social=${next.socialLinks.length}` +
       ` featured=${next.featuredLinks.length}` +
       ` projects=${next.links.length}` +
-      ` embeds=${next.embeds.length}` +
-      `\n  changed=${changed}`,
+      ` embeds=${next.embeds.length}`,
   );
 
   // Exit 0 always on success; workflow decides whether to commit.
   if (process.env.GITHUB_OUTPUT) {
-    const { appendFileSync } = await import("node:fs");
     appendFileSync(process.env.GITHUB_OUTPUT, `changed=${changed}\n`);
   }
 }

@@ -3,6 +3,7 @@
 import { socialLinks } from "../config/openlink";
 import type { SocialType } from "../config/openlink";
 import { TrackedLink } from "./TrackedLink";
+import { ThemeToggle } from "./ThemeToggle";
 
 type IconProps = { type: SocialType };
 
@@ -81,29 +82,26 @@ function SocialIcon({ type }: IconProps) {
   );
 }
 
-export function SocialRow() {
-  if (!socialLinks.length) return null;
-
+export function Dock() {
   return (
-    <section aria-label="Social links">
-      <div className="flex flex-wrap items-center gap-6 pb-12">
-        {socialLinks.map((link, i) => (
-          <TrackedLink
-            key={`${link.type}-${link.href}`}
-            href={link.href}
-            label={link.label}
-            section="social"
-            extraUTM={{ utm_content: "social" }}
-            className="rise-in group flex items-center justify-center"
-            style={{ animationDelay: `${140 + i * 40}ms` }}
-          >
-            <div className="flex h-6 w-6 items-center justify-center text-muted transition-colors duration-200 group-hover:text-ink dark:text-muted dark:group-hover:text-ink">
-              <SocialIcon type={link.type} />
-            </div>
-          </TrackedLink>
-        ))}
-      </div>
-    </section>
+    <nav
+      aria-label="Social links"
+      className="glass fixed inset-x-0 bottom-5 z-50 mx-auto flex w-fit max-w-[calc(100vw-2rem)] items-center gap-1 rounded-[30px] p-2.5"
+    >
+      {socialLinks.map((link) => (
+        <TrackedLink
+          key={`${link.type}-${link.href}`}
+          href={link.href}
+          label={link.label}
+          section="social"
+          extraUTM={{ utm_content: "social" }}
+          className="flex h-12 w-12 items-center justify-center rounded-[16px] text-ink transition-transform duration-150 hover:-translate-y-1 hover:bg-fill"
+        >
+          <SocialIcon type={link.type} />
+        </TrackedLink>
+      ))}
+      <span aria-hidden="true" className="mx-1 h-8 w-px bg-hairline" />
+      <ThemeToggle />
+    </nav>
   );
 }
-

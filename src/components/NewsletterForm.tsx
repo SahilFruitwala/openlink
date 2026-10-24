@@ -86,29 +86,27 @@ export function NewsletterForm() {
   };
 
   return (
-    <section aria-label="Newsletter signup">
-      <div className="relative flex w-full flex-col pt-12">
-      <div className="relative z-10">
-        <h3 className="font-serif text-[24px] font-medium leading-tight text-ink dark:text-ink">
-          Join the Inner Circle
-        </h3>
-        <p className="mt-2 max-w-[420px] text-[15px] leading-relaxed text-muted dark:text-muted">
-          Exclusive updates about what I&apos;m building, reading, and learning.
-        </p>
-      </div>
+    <section
+      aria-label="Newsletter signup"
+      className="glass rounded-[32px] p-6"
+    >
+      <h3 className="font-display text-[19px] font-bold leading-tight tracking-[-0.01em] text-ink">
+        Get new releases by email
+      </h3>
+      <p className="mt-3 max-w-[420px] text-[14px] leading-relaxed text-muted">
+        Short notes on what I&apos;m building, reading, and learning.
+      </p>
 
       {success ? (
-        <div className="relative z-10 mt-4 space-y-1.5">
-          <p className="font-serif text-[18px] font-medium text-ink dark:text-ink">
-            You&apos;re on the list.
-          </p>
+        <div className="mt-5 space-y-1.5">
+          <p className="text-[18px] font-bold text-ink">You&apos;re on the list.</p>
           <button
             type="button"
             onClick={() => {
               setSuccess(false);
               setError(null);
             }}
-            className="text-[14px] text-muted underline decoration-transparent underline-offset-[3px] transition-colors hover:decoration-current dark:text-muted"
+            className="text-[14px] text-muted underline underline-offset-[3px]"
           >
             Use another email
           </button>
@@ -118,7 +116,7 @@ export function NewsletterForm() {
           action={isBeehiiv ? undefined : newsletter.action}
           method={isBeehiiv ? undefined : newsletter.method ?? "POST"}
           onSubmit={handleSubmit}
-          className="relative z-10 mt-4 flex flex-col gap-2 sm:flex-row"
+          className="mt-5 flex flex-col gap-3 sm:flex-row"
         >
           {!isBeehiiv && newsletter.hiddenFields &&
             Object.entries(newsletter.hiddenFields).map(([key, value]) => (
@@ -132,31 +130,18 @@ export function NewsletterForm() {
             required
             placeholder="you@example.com"
             disabled={submitting}
-            className="
-              h-[52px] sm:h-11 w-full sm:flex-1 appearance-none rounded-md
-              bg-fill px-4 text-[16px] sm:text-[15px] text-ink
-              placeholder:text-faint
-              border border-transparent
-              focus:border-accent
-              focus:outline-none
-              disabled:opacity-60
-              transition-colors"
+            className="h-[52px] w-full appearance-none rounded-full border border-transparent bg-fill px-5 text-[16px] text-ink placeholder:text-faint focus:border-accent focus:outline-none disabled:opacity-60 sm:flex-1"
           />
           <button
             type="submit"
             disabled={submitting}
-            className="h-[52px] sm:h-11 shrink-0 rounded-md bg-accent px-6 text-[14px] font-medium text-background transition-opacity hover:opacity-85 disabled:opacity-60"
+            className="h-[52px] shrink-0 rounded-full bg-accent px-7 text-[15px] font-semibold text-on-accent transition-transform active:scale-95 disabled:opacity-60"
           >
-            {submitting ? "Joining…" : "Subscribe"}
+            {submitting ? "Subscribing…" : "Subscribe"}
           </button>
         </form>
       )}
-      {error && (
-        <p className="relative z-10 mt-2.5 text-[14px] text-muted dark:text-muted">
-          {error}
-        </p>
-      )}
-      </div>
+      {error && <p className="mt-3 text-[14px] font-medium text-muted">{error}</p>}
     </section>
   );
 }
