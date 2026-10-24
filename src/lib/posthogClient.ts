@@ -4,7 +4,7 @@ let initialized = false;
 
 export function initPosthog() {
   if (initialized || typeof window === "undefined") return;
-  
+
   // Astro uses import.meta.env for env vars
   const isDev = import.meta.env.DEV;
   if (isDev) {
@@ -13,7 +13,7 @@ export function initPosthog() {
   }
 
   const key = import.meta.env.PUBLIC_POSTHOG_KEY;
-  const host = import.meta.env.PUBLIC_POSTHOG_HOST || "https://app.posthog.com";
+  const host = import.meta.env.PUBLIC_POSTHOG_HOST || "https://us.i.posthog.com";
 
   if (!key) {
     initialized = true;
