@@ -1,5 +1,5 @@
 {
-  "syncedAt": "2026-08-29T13:47:33.134Z",
+  "syncedAt": "2026-10-24T15:40:27.426Z",
   "source": "notion",
   "profile": {
     "name": "Sahil Fruitwala",
@@ -42,6 +42,13 @@
       "description": "Blog & Thoughts",
       "highlightKey": "blog",
       "iconEmoji": "◈"
+    },
+    {
+      "label": "FileMite (Free PDF & image tools)",
+      "href": "https://www.filemite.com/",
+      "description": "25 free PDF & image tools. No sign-up, nothing stored.",
+      "logoUrl": "https://www.filemite.com/logo.png",
+      "logoStyle": "app"
     }
   ],
   "links": [
@@ -53,11 +60,9 @@
       "logoStyle": "app"
     },
     {
-      "label": "MicroPNG",
-      "href": "https://micropng.sahilfruitwala.com",
-      "description": "Compress, Convert & Resize Images",
-      "logoUrl": "/logos/micropng.webp",
-      "logoStyle": "app"
+      "label": "Kami",
+      "href": "https://kami.sahilfruitwala.com/",
+      "description": "A quiet digital sanctuary for reading, inking, and unhurried thought."
     }
   ],
   "embeds": []
