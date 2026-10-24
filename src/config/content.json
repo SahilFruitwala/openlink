@@ -1,5 +1,5 @@
 {
-  "syncedAt": "2026-10-24T16:10:57.568Z",
+  "syncedAt": "2026-10-24T16:21:24.778Z",
   "source": "notion",
   "profile": {
     "name": "Sahil Fruitwala",
@@ -46,17 +46,17 @@
   ],
   "links": [
     {
-      "label": "DuoCamRecorder",
-      "href": "https://apps.apple.com/us/app/duocamrecorder/id6774351529",
-      "description": "Record 16:9 & 9:16 Together",
-      "logoUrl": "/logos/duocamrecorder.png",
+      "label": "FileMite (Free PDF & image tools)",
+      "href": "https://www.filemite.com/",
+      "description": "25 free PDF & image tools",
+      "logoUrl": "https://www.filemite.com/logo.png",
       "logoStyle": "app"
     },
     {
-      "label": "FileMite (Free PDF & image tools)",
-      "href": "https://www.filemite.com/",
-      "description": "25 free PDF & image tools. No sign-up, nothing stored.",
-      "logoUrl": "https://www.filemite.com/logo.png",
+      "label": "DuoCamRecorder",
+      "href": "https://apps.apple.com/us/app/duocamrecorder/id6774351529",
+      "description": "Record 16:9 & 9:16 Together",
+      "logoUrl": "https://kami.sahilfruitwala.com/logo.webp",
       "logoStyle": "app"
     },
     {
