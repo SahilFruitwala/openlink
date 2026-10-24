@@ -1,5 +1,5 @@
 {
-  "syncedAt": "2026-10-24T16:21:24.778Z",
+  "syncedAt": "2026-10-24T16:26:06.476Z",
   "source": "notion",
   "profile": {
     "name": "Sahil Fruitwala",
@@ -56,13 +56,14 @@
       "label": "DuoCamRecorder",
       "href": "https://apps.apple.com/us/app/duocamrecorder/id6774351529",
       "description": "Record 16:9 & 9:16 Together",
-      "logoUrl": "https://kami.sahilfruitwala.com/logo.webp",
+      "logoUrl": "https://links.sahilfruitwala.com/logos/duocamrecorder.png",
       "logoStyle": "app"
     },
     {
       "label": "Kami",
       "href": "https://kami.sahilfruitwala.com/",
-      "description": "A quiet digital sanctuary for reading, inking, and unhurried thought."
+      "description": "A quiet digital sanctuary for reading, inking, and unhurried thought.",
+      "logoUrl": "https://kami.sahilfruitwala.com/logo.webp"
     }
   ],
   "embeds": []
