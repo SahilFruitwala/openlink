@@ -1,25 +1,22 @@
 import { ProfileHeader } from "./ProfileHeader";
-import { SocialRow } from "./SocialRow";
 import { FeaturedLinks, LinkList } from "./Links";
 import { NewsletterForm } from "./NewsletterForm";
 import { EmbedsSection } from "./EmbedsSection";
-import { ThemeToggle } from "./ThemeToggle";
+import { Dock } from "./SocialRow";
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen justify-center">
-      <main className="relative flex h-full min-h-screen w-full max-w-[560px] flex-col overflow-x-hidden px-7 pb-28">
-        <div className="fixed bottom-6 right-6 z-50">
-          <ThemeToggle />
-        </div>
+    <div className="mx-auto min-h-screen w-full max-w-[480px] px-5 pb-36 pt-10">
+      <ProfileHeader />
 
-        <ProfileHeader />
-        <SocialRow />
+      <main className="mt-5 flex flex-col gap-5">
         <FeaturedLinks />
         <LinkList />
         <NewsletterForm />
         <EmbedsSection />
       </main>
+
+      <Dock />
     </div>
   );
 }

@@ -5,41 +5,56 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 /* ---------------------------------------------------------------
-   Warm editorial. Paper and ink, not panels. One continuous column,
-   hairline rules instead of section boxes, terracotta as the only accent.
+   Home screen. The page is a phone: a flat tinted ground, solid
+   widgets, app icons with labels underneath and a dock of socials.
 ------------------------------------------------------------------ */
 
 :root {
-  --background: #faf6f0;
-  --foreground: #2a211c;
-  --color-muted: #7a6a5f;
-  --color-faint: #a2907f;
-  --color-hairline: rgba(42, 33, 28, 0.12);
-  --color-accent: #b4552d;
-  --color-fill: rgba(42, 33, 28, 0.05);
+  --background: #dde5f6;
+  --foreground: #14213d;
+  --color-muted: #3d4d73;
+  --color-faint: #60709a;
+  --color-hairline: rgba(20, 33, 61, 0.1);
+  --color-accent: #3a5bff;
+  --color-on-accent: #ffffff;
+  --color-fill: rgba(20, 33, 61, 0.08);
+  --color-tile: #ffffff;
+  --color-mint: #ffffff;
 }
 
 :root.dark {
-  --background: #1b1613;
-  --foreground: #f2e9df;
-  --color-muted: #a89685;
-  --color-faint: #7a6a5f;
-  --color-hairline: rgba(242, 233, 223, 0.14);
-  --color-accent: #e08a5c;
-  --color-fill: rgba(242, 233, 223, 0.06);
+  --background: #0a1224;
+  --foreground: #eef2ff;
+  --color-muted: #b2bddb;
+  --color-faint: #7d8aae;
+  --color-hairline: rgba(255, 255, 255, 0.1);
+  --color-accent: #8ea2ff;
+  --color-on-accent: #0a1224;
+  --color-fill: rgba(255, 255, 255, 0.1);
+  --color-tile: #141d38;
+  --color-mint: #141d38;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: "Karla", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-serif: "Fraunces", "Iowan Old Style", Georgia, serif;
+  --font-sans: "Figtree", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-display: "Unbounded", "Figtree", system-ui, sans-serif;
   --color-ink: var(--foreground);
   --color-muted: var(--color-muted);
   --color-faint: var(--color-faint);
   --color-accent: var(--color-accent);
+  --color-on-accent: var(--color-on-accent);
   --color-hairline: var(--color-hairline);
   --color-fill: var(--color-fill);
+  --color-tile: var(--color-tile);
+  --color-mint: var(--color-mint);
+}
+
+.glass {
+  background: var(--color-tile);
+  border: 1px solid var(--color-hairline);
+  box-shadow: 0 1px 2px rgba(20, 33, 61, 0.04), 0 10px 30px -14px rgba(20, 33, 61, 0.18);
 }
 
 body {
@@ -47,7 +62,6 @@ body {
   background-color: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans);
-  font-feature-settings: "ss01";
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
