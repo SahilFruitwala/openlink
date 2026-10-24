@@ -2,6 +2,27 @@ import type { APIRoute } from "astro";
 
 const BEEHIIV_API = "https://api.beehiiv.com/v2";
 
+type BeehiivCredentials = {
+  apiKey?: string;
+  publicationId?: string;
+};
+
+/** Dev reads `.env`; production reads Cloudflare Worker secrets at request time. */
+async function getBeehiivCredentials(): Promise<BeehiivCredentials> {
+  if (import.meta.env.DEV) {
+    return {
+      apiKey: import.meta.env.BEEHIIV_API_KEY,
+      publicationId: import.meta.env.BEEHIIV_PUBLICATION_ID,
+    };
+  }
+
+  const { env } = await import("cloudflare:workers");
+  return {
+    apiKey: env.BEEHIIV_API_KEY,
+    publicationId: env.BEEHIIV_PUBLICATION_ID,
+  };
+}
+
 function isValidEmail(value: unknown): value is string {
   if (typeof value !== "string" || value.length > 254) return false;
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -9,8 +30,7 @@ function isValidEmail(value: unknown): value is string {
 }
 
 export const POST: APIRoute = async ({ request }) => {
-  const apiKey = import.meta.env.BEEHIIV_API_KEY;
-  const publicationId = import.meta.env.BEEHIIV_PUBLICATION_ID;
+  const { apiKey, publicationId } = await getBeehiivCredentials();
 
   if (!apiKey || !publicationId) {
     return new Response(

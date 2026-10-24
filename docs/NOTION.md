@@ -80,7 +80,7 @@ This overwrites `src/config/content.json`. Commit the file if you want the chang
 
 ## 5. GitHub Action
 
-Repo → **Settings** → **Secrets and variables** → **Actions** → add:
+Repo → **Settings** → **Environments** → **Production** → **Environment secrets** → add:
 
 - `NOTION_TOKEN`
 - `NOTION_DATABASE_ID`
